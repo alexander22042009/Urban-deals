@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="bg">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UrbanDeals — Home</title>
+
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+
+    <link rel="stylesheet" href="./homePage.css">
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="container header">
+            <a class="brand" href="../HomePage/homePage.css">
+                <span class="logo"></span>
+                <span>UrbanDeals</span>
+            </a>
+
+            <nav class="nav">
+                <a class="active" href="../HomePage/homePage.html">Home</a>
+                <a href="../ShopPage/shopPage.html">Shop</a>
+                <a href="../CartPage/cartPage.html">Cart <span class="badge" data-cart-count>0</span></a>
+                <a href="../AccountPage/accountPage.html">Account</a>
+            </nav>
+
+            <div class="userbox">
+                <span class="pill">👤 <span data-user-name>—</span></span>
+                <span class="pill">🛒 <span data-cart-count>0</span></span>
+                <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+            </div>
+
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="home">
+            <div class="card home__hero">
+                <h1 class="page-title">Home / Dashboard</h1>
+            </div>
+
+            <div class="home__options">
+                <a class="card home__tile" href="../ShopPage/index.html">
+                    <h3>Shop</h3>
+                    <p>Browse products and discounts.</p>
+                    <span class="btn">Open Shop</span>
+                </a>
+
+                <a class="card home__tile" href="../CartPage/index.html">
+                    <h3>Cart</h3>
+                    <p>View items, totals and checkout.</p>
+                    <span class="btn">Open Cart</span>
+                </a>
+
+                <a class="card home__tile" href="../AccountPage/index.html">
+                    <h3>Account</h3>
+                    <p>Edit your profile info.</p>
+                    <span class="btn">Open Account</span>
+                </a>
+            </div>
+
+            <div class="card home__featured">
+                <h3>Featured deals</h3>
+                <p class="notice">Top 3 discounted items (demo).</p>
+
+                <div class="home__featuredRow" data-featured></div>
+
+                <div style="margin-top:12px">
+                    <a class="btn" href="../ShopPage/index.html">See all products</a>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="footer">
+            UrbanDeals • Frontend skeleton (DB connection later)
+        </div>
+    </main>
+
+    <script src="../../assets/js/store.js"></script>
+    <script src="../../assets/js/common.js"></script>
+
+    <script src="./homePage.js"></script>
+</body>
+
+</html>
