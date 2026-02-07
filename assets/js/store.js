@@ -1,18 +1,21 @@
-// assets/js/store.js
-// Shared data layer (mock now, later DB/API)
-
 (function () {
     "use strict";
 
     const KEY_USER = "ud_user";
     const KEY_CART = "ud_cart";
     const KEY_PRODUCTS = "ud_products";
+    const KEY_APPLIED_VOUCHER = "ud_applied_voucher";
 
     const seedUser = {
         id: 1,
         firstName: "John",
         lastName: "Doe",
         wallet: 120.0,
+        vouchers: [
+            { id: "V10", title: "Voucher 10%", percent: 10 },
+            { id: "V15", title: "Voucher 15%", percent: 15 },
+            { id: "V25", title: "Voucher 25%", percent: 25 }
+        ]
     };
 
     const seedProducts = [
@@ -44,6 +47,21 @@
         if (!localStorage.getItem(KEY_USER)) write(KEY_USER, seedUser);
         if (!localStorage.getItem(KEY_PRODUCTS)) write(KEY_PRODUCTS, seedProducts);
         if (!localStorage.getItem(KEY_CART)) write(KEY_CART, []);
+
+        const u = read(KEY_USER, null);
+        if (!u) {
+            write(KEY_USER, seedUser);
+        } else if (!Array.isArray(u.vouchers)) {
+            u.vouchers = seedUser.vouchers;
+            write(KEY_USER, u);
+        }
+
+        if (!localStorage.getItem(KEY_PRODUCTS)) write(KEY_PRODUCTS, seedProducts);
+        if (!localStorage.getItem(KEY_CART)) write(KEY_CART, []);
+
+        if (!localStorage.getItem(KEY_APPLIED_VOUCHER)) {
+            write(KEY_APPLIED_VOUCHER, null);
+        }
     }
 
     function money(n) {
@@ -72,5 +90,11 @@
         setCart: (c) => write(KEY_CART, c),
 
         cartCount: () => (read(KEY_CART, []) || []).reduce((s, i) => s + (i.qty || 0), 0),
+
+        getVouchers: () => (read(KEY_USER, seedUser).vouchers || []),
+
+        getAppliedVoucher: () => read(KEY_APPLIED_VOUCHER, null),
+        setAppliedVoucher: (voucherIdOrNull) => write(KEY_APPLIED_VOUCHER, voucherIdOrNull),
+
     };
 })();

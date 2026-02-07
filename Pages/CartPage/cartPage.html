@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="bg">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UrbanDeals — Cart</title>
+
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+
+
+    <link rel="stylesheet" href="./cartPage.css" />
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="container header">
+            <a class="brand" href="../HomePage/homePage.css">
+                <span class="logo"></span>
+                <span>UrbanDeals</span>
+            </a>
+
+            <nav class="nav">
+                <a class="active" href="../HomePage/homePage.html">Home</a>
+                <a href="../ShopPage/shopPage.html">Shop</a>
+                <a href="../CartPage/cartPage.html">Cart <span class="badge" data-cart-count>0</span></a>
+                <a href="../AccountPage/accountPage.html">Account</a>
+            </nav>
+
+            <div class="userbox">
+                <span class="pill">👤 <span data-user-name>—</span></span>
+                <span class="pill">🛒 <span data-cart-count>0</span></span>
+                <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+            </div>
+
+        </div>
+    </div>
+    </header>
+
+    <main class="page cart-page">
+        <div class="container">
+
+            <section class="hero">
+                <h1 class="hero__title">Cart</h1>
+                <p class="hero__sub">Review items, update quantities, and proceed to checkout.</p>
+            </section>
+
+            <section class="cart-layout">
+                <div class="card cart-card">
+                    <div class="cart-card__head">
+                        <h2>Your items</h2>
+                        <button class="btn" data-clear-cart>Clear cart</button>
+                    </div>
+
+                    <div class="cart-list" data-cart-list>
+                        <!-- items render here -->
+                    </div>
+
+                    <div class="cart-empty" data-cart-empty hidden>
+                        <p>Your cart is empty.</p>
+                        <a class="btn primary" href="../ShopPage/shopPage.html">Go to shop</a>
+                    </div>
+                </div>
+
+                <aside class="card summary-card">
+                    <h2>Summary</h2>
+
+                    <div class="summary-row">
+                        <span>Items</span>
+                        <span data-summary-items>0</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span data-summary-subtotal>€0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span data-summary-discount>€0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Voucher</span>
+                        <span data-summary-voucher>—</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span data-summary-total>€0.00</span>
+                    </div>
+
+                    <div class="voucher-box">
+                        <h3 class="voucher-title">Voucher</h3>
+                        <div class="voucher-list" data-voucher-list></div>
+                        <div class="voucher-msg" data-voucher-msg></div>
+                    </div>
+
+                    <button class="btn primary w-100" data-checkout>Checkout</button>
+                    <p class="summary-hint">Checkout page is next (we’ll build it after Cart).</p>
+                </aside>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="../../assets/js/store.js"></script>
+    <script src="../../assets/js/common.js"></script>
+    <script src="./cartPage.js"></script>
+</body>
+
+</html>

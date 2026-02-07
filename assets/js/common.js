@@ -1,5 +1,3 @@
-// assets/js/common.js
-
 (function () {
   "use strict";
 
@@ -19,6 +17,11 @@
 
     document.querySelectorAll("[data-cart-count]").forEach((el) => {
       el.textContent = String(count);
+
+    document.querySelectorAll("[data-user-wallet], [data-user-balance]").forEach((el) => {
+      el.textContent = window.Store.money(u.wallet);
+    });
+
     });
   }
 
