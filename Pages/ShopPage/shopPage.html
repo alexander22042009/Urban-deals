@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UrbanDeals — Shop</title>
+
+  <!-- Global -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="./shopPage.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="topbar">
+    <div class="container header">
+      <a class="brand" href="../HomePage/homePage.html">
+        <span class="logo"></span>
+        <span>UrbanDeals</span>
+      </a>
+
+      <nav class="nav">
+        <a href="../HomePage/homePage.html">Home</a>
+        <a class="active" href="../ShopPage/index.html">Shop</a>
+        <a href="../CartPage/index.html">Cart <span class="badge" data-cart-count>0</span></a>
+        <a href="../AccountPage/index.html">Account</a>
+      </nav>
+
+      <div class="userbox">
+        <span class="pill">👤 <span data-user-name>—</span></span>
+        <span class="pill">🛒 <span data-cart-count>0</span></span>
+        <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="shop__head">
+      <h1 class="page-title">Shop</h1>
+      <p class="sub">Browse products, filter discounts, add to cart.</p>
+    </div>
+
+    <img src="/assets/img/products/earbuds.jpg" style="width:200px; border:2px solid red;">
+
+    <!-- Toolbar -->
+    <div class="card shop__toolbar">
+      <div class="shop__toolbarLeft">
+        <label>Search</label>
+        <input class="input" type="text" placeholder="Search products..." data-search>
+      </div>
+
+      <div class="shop__toolbarRight">
+        <div>
+          <label>Sort</label>
+          <select class="input" data-sort>
+            <option value="discount">Biggest discount</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+            <option value="nameAsc">Name: A-Z</option>
+            <option value="nameDesc">Name: Z-A</option>
+          </select>
+        </div>
+
+        <label class="pill shop__toggle">
+          <input type="checkbox" data-only-discount />
+          Only discounted
+        </label>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="shop__grid" data-products></div>
+
+    <div class="footer">
+      Tip: Click a product card title to open Product details (we’ll build that page next).
+    </div>
+  </main>
+
+  <!-- Shared JS -->
+  <script src="../../assets/js/store.js"></script>
+  <script src="../../assets/js/common.js"></script>
+
+  
+  <script src="./shopPage.js"></script>
+</body>
+</html>
