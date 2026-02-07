@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>UrbanDeals — Product</title>
+
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css">
+
+    <link rel="stylesheet" href="./productPage.css" />
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="container header">
+            <a class="brand" href="../HomePage/homePage.html">
+                <span class="logo"></span>
+                <span>UrbanDeals</span>
+            </a>
+
+            <nav class="nav">
+                <a href="../HomePage/homePage.html">Home</a>
+                <a href="../ShopPage/shopPage.html">Shop</a>
+                <a href="../CartPage/cartPage.html">Cart <span class="badge" data-cart-count>0</span></a>
+                <a href="../AccountPage/accountPage.html">Account</a>
+            </nav>
+
+            <div class="userbox">
+                <span class="pill">👤 <span data-user-name>—</span></span>
+                <span class="pill">🛒 <span data-cart-count>0</span></span>
+                <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+            </div>
+
+        </div>
+
+        <main class="page product-page">
+            <div class="container" data-product></div>
+        </main>
+
+        <script src="../../assets/js/store.js"></script>
+        <script src="../../assets/js/common.js"></script>
+        <script src="./productPage.js"></script>
+</body>
+
+</html>

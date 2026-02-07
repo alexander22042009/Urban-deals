@@ -16,71 +16,16 @@
     };
 
     const seedProducts = [
-        {
-            id: 1,
-            name: "Wireless Earbuds X200",
-            desc: "Active noise cancellation, 24h battery life, compact charging case.",
-            price: 120.0,
-            discountPct: 25,
-            image: "earbuds.jpg",
-        },
-        {
-            id: 2,
-            name: "Smart Watch Fit Pro",
-            desc: "Heart rate, sleep tracking, notifications, waterproof design.",
-            price: 180.0,
-            discountPct: 15,
-            image: "watch.jpg",
-        },
-        {
-            id: 3,
-            name: "LED Desk Lamp Minimal",
-            desc: "Warm & cold light modes, touch control, modern aluminum body.",
-            price: 75.0,
-            discountPct: 30,
-            image: "lamp.jpg",
-        },
-        {
-            id: 4,
-            name: "Power Bank 20 000mAh",
-            desc: "Fast charging, USB-C & USB-A, slim travel-friendly design.",
-            price: 90.0,
-            discountPct: 10,
-            image: "powerbank.jpg",
-        },
-        {
-            id: 5,
-            name: "Bluetooth Speaker Mini",
-            desc: "Deep bass, IPX6 waterproof, up to 8 hours play time.",
-            price: 110.0,
-            discountPct: 20,
-            image: "speaker.jpg",
-        },
-        {
-            id: 6,
-            name: "Thermo Mug Steel 450ml",
-            desc: "Keeps drinks hot or cold for hours, leak-proof lid.",
-            price: 45.0,
-            discountPct: 0,
-            image: "mug.jpg",
-        },
-        {
-            id: 7,
-            name: "Fitness Resistance Bands",
-            desc: "Set of 5 bands with different resistance levels.",
-            price: 35.0,
-            discountPct: 10,
-            image: "bands.jpg",
-        },
-        {
-            id: 8,
-            name: "Smart Body Scale",
-            desc: "Tracks weight, BMI, fat %, syncs with mobile app.",
-            price: 85.0,    
-            discountPct: 18,
-            image: "scale.jpg",
-        },
+        { id: 1, name: "Wireless Earbuds X200", desc: "...", price: 120, discountPct: 25, image: "earbuds.jpg" },
+        { id: 2, name: "Smart Watch Fit Pro", desc: "...", price: 180, discountPct: 15, image: "watch.jpg" },
+        { id: 3, name: "LED Desk Lamp Minimal", desc: "...", price: 75, discountPct: 30, image: "lamp.jpg" },
+        { id: 4, name: "Power Bank 20 000mAh", desc: "...", price: 90, discountPct: 10, image: "powerbank.jpg" },
+        { id: 5, name: "Bluetooth Speaker Mini", desc: "...", price: 110, discountPct: 20, image: "speaker.jpg" },
+        { id: 6, name: "Thermo Mug Steel 450ml", desc: "...", price: 45, discountPct: 0, image: "mug.jpg" },
+        { id: 7, name: "Fitness Resistance Bands", desc: "...", price: 35, discountPct: 10, image: "bands.jpg" },
+        { id: 8, name: "Smart Body Scale", desc: "...", price: 85, discountPct: 18, image: "scale.jpg" }
     ];
+
 
     function read(key, fallback) {
         try {

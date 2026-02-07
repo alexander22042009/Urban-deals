@@ -1,11 +1,7 @@
-// Pages/ShopPage/shopPage.js
-
-
 (function () {
     "use strict";
 
-    // Always use absolute paths from site root (works from any page)
-    const IMG_BASE = "/assets/imgages/products/";
+    const IMG_BASE = "/assets/images/products/";
     const PLACEHOLDER = `${IMG_BASE}placeholder.jpg`;
 
     function getCart() {
@@ -29,6 +25,14 @@
         setCart(cart);
     }
 
+    function resolveImgSrc(p) {
+        if (typeof p.image === "string" && (p.image.startsWith("/") || p.image.startsWith("http"))) {
+            return p.image;
+        }
+
+        return `${IMG_BASE}${p.image || "placeholder.jpg"}`;
+    }
+
     function renderProducts(list) {
         const host = document.querySelector("[data-products]");
         if (!host) return;
@@ -38,16 +42,7 @@
                 const hasDisc = (p.discountPct || 0) > 0;
                 const sale = window.Store.discountedPrice(p);
 
-                // store.js should keep only filename like "earbuds.jpg"
-                const imgSrc = (function () {
-                    // ако вече е пълен път (почва с / или http), ползваме директно
-                    if (typeof p.image === "string" && (p.image.startsWith("/") || p.image.startsWith("http"))) {
-                        return p.image;
-                    }
-                    // иначе го правим спрямо текущата страница
-                    return new URL(`../../assets/img/products/${p.image}`, document.baseURI).href;
-                })();
-
+                const imgSrc = resolveImgSrc(p);
 
                 return `
           <article class="card product">
@@ -61,7 +56,7 @@
             </div>
 
             <div class="product__title">
-              <a href="../ProductPage/index.html?id=${p.id}">${p.name}</a>
+              <a href="../ProductPage/productPage.html?id=${p.id}">${p.name}</a>
               ${hasDisc ? `<span class="badge sale">-${p.discountPct}%</span>` : ``}
             </div>
 
@@ -146,9 +141,8 @@
         console.log("ShopPage JS loaded");
         console.log("Products:", window.Store.getProducts());
 
-        // Quick debug: show what image URL will be used for first product
         const first = window.Store.getProducts()?.[0];
-        if (first) console.log("First image URL:", `${IMG_BASE}${first.image}`);
+        if (first) console.log("First image URL:", resolveImgSrc(first));
 
         document
             .querySelector("[data-search]")
@@ -174,7 +168,7 @@
                 const view = e.target.closest("[data-view]");
                 if (view) {
                     const id = Number(view.dataset.view);
-                    location.href = `../ProductPage/index.html?id=${id}`;
+                    location.href = `../ProductPage/productPage.html?id=${id}`;
                 }
             });
         }
