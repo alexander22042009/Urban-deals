@@ -255,7 +255,7 @@
 
             const checkout = e.target.closest("[data-checkout]");
             if (checkout) {
-                alert("Checkout page is next. For now this is a placeholder.");
+                location.href = "../CheckoutPage/checkoutPage.html";
             }
         });
 

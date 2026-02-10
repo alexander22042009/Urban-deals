@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="bg">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UrbanDeals — Checkout</title>
+
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="./checkoutPage.css" />
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="topbar">
+            <div class="container header">
+                <a class="brand" href="../HomePage/homePage.html">
+                    <span class="logo"></span>
+                    <span>UrbanDeals</span>
+                </a>
+
+                <nav class="nav">
+                    <a href="../HomePage/homePage.html">Home</a>
+                    <a href="../ShopPage/shopPage.html">Shop</a>
+                    <a href="../CartPage/cartPage.html">Cart <span class="badge" data-cart-count>0</span></a>
+                    <a href="../AccountPage/accountPage.html">Account</a>
+                </nav>
+
+                <div class="userbox">
+                    <span class="pill">👤 <span data-user-name>—</span></span>
+                    <span class="pill">🛒 <span data-cart-count>0</span></span>
+                    <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="page checkout-page">
+        <div class="container">
+
+            <section class="hero">
+                <h1 class="hero__title">Checkout</h1>
+                <p class="hero__sub">Confirm delivery details and place your order.</p>
+            </section>
+
+            <section class="checkout-layout">
+                <div class="card form-card">
+                    <h2>Delivery details</h2>
+
+                    <form id="checkoutForm" novalidate>
+                        <div class="grid">
+                            <div class="field">
+                                <label>Full name</label>
+                                <input class="input" name="fullName" placeholder="John Doe" required />
+                                <div class="error" data-err="fullName"></div>
+                            </div>
+
+                            <div class="field">
+                                <label>Phone</label>
+                                <input class="input" name="phone" placeholder="+359..." required />
+                                <div class="error" data-err="phone"></div>
+                            </div>
+
+                            <div class="field">
+                                <label>Email</label>
+                                <input class="input" type="email" name="email" placeholder="john@email.com" required />
+                                <div class="error" data-err="email"></div>
+                            </div>
+
+                            <div class="field">
+                                <label>City</label>
+                                <input class="input" name="city" placeholder="Sofia" required />
+                                <div class="error" data-err="city"></div>
+                            </div>
+
+                            <div class="field field--full">
+                                <label>Address</label>
+                                <input class="input" name="address" placeholder="Street, number, entrance..."
+                                    required />
+                                <div class="error" data-err="address"></div>
+                            </div>
+
+                            <div class="field field--full">
+                                <label>Note (optional)</label>
+                                <textarea class="input textarea" name="note" rows="3"
+                                    placeholder="Delivery note..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="paybox">
+                            <div class="paybox__left">
+                                <label>Payment method</label>
+
+                                <select class="input select-native" name="payment" required>
+                                    <option value="wallet" selected>Wallet balance</option>
+                                    <option value="cash">Cash on delivery</option>
+                                </select>
+
+                                <div class="select" data-select="payment">
+                                    <button type="button" class="select__btn" aria-haspopup="listbox"
+                                        aria-expanded="false">
+                                        <span class="select__value" data-select-value>Wallet balance</span>
+                                        <span class="select__arrow">▾</span>
+                                    </button>
+
+                                    <div class="select__menu" role="listbox" aria-label="Payment method">
+                                        <button type="button" class="select__option" role="option" data-value="wallet">
+                                            💰 Wallet balance
+                                        </button>
+                                        <button type="button" class="select__option" role="option" data-value="cash">
+                                            🚚 Cash on delivery
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <button class="btn primary" type="submit" data-place-order>
+                                Place order
+                            </button>
+                        </div>
+
+                        <div class="form-msg" data-form-msg></div>
+                    </form>
+                </div>
+
+                <aside class="card summary-card">
+                    <h2>Order summary</h2>
+
+                    <div class="summary-list" data-summary-list></div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row">
+                        <span>Items</span>
+                        <span data-s-items>0</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span data-s-subtotal>€0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span data-s-discount>- €0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Voucher</span>
+                        <span data-s-voucher>—</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span data-s-total>€0.00</span>
+                    </div>
+
+                    <a class="btn w-100" href="../CartPage/cartPage.html">Back to cart</a>
+                </aside>
+            </section>
+
+            <section class="card success" data-success hidden>
+                <h2>✅ Order placed!</h2>
+                <p>Your order has been created successfully.</p>
+                <div class="success__actions">
+                    <a class="btn primary" href="../ShopPage/shopPage.html">Continue shopping</a>
+                    <a class="btn" href="../AccountPage/accountPage.html">Go to account</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="../../assets/js/store.js"></script>
+    <script src="../../assets/js/common.js"></script>
+    <script src="./checkoutPage.js"></script>
+</body>
+
+</html>
