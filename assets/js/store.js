@@ -74,7 +74,6 @@
         return Math.round(val * 100) / 100;
     }
 
-    // Expose Store
     window.Store = {
         ensureSeed,
         money,

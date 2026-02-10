@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="bg">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UrbanDeals — Account</title>
+
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="./accountPage.css" />
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="topbar">
+            <div class="container header">
+                <a class="brand" href="../HomePage/homePage.html">
+                    <span class="logo"></span>
+                    <span>UrbanDeals</span>
+                </a>
+
+                <nav class="nav">
+                    <a href="../HomePage/homePage.html">Home</a>
+                    <a href="../ShopPage/shopPage.html">Shop</a>
+                    <a href="../CartPage/cartPage.html">Cart <span class="badge" data-cart-count>0</span></a>
+                    <a class="active" href="../AccountPage/accountPage.html">Account</a>
+                </nav>
+
+                <div class="userbox">
+                    <span class="pill">👤 <span data-user-name>—</span></span>
+                    <span class="pill">🛒 <span data-cart-count>0</span></span>
+                    <span class="pill">💰 <span data-user-wallet>€0.00</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page account-page">
+        <div class="container">
+
+            <section class="hero">
+                <h1 class="hero__title">Account</h1>
+                <p class="hero__sub">Your profile, wallet and vouchers.</p>
+            </section>
+
+            <section class="account-grid">
+                <article class="card acc-card">
+                    <div class="acc-head">
+                        <div class="acc-avatar">👤</div>
+                        <div class="acc-meta">
+                            <div class="acc-name" data-acc-name>—</div>
+                            <div class="acc-sub">Logged in</div>
+                        </div>
+                    </div>
+
+                    <div class="acc-stats">
+                        <div class="stat stat--wallet">
+                            <div class="stat__label">Wallet balance</div>
+                            <div class="stat__value" data-acc-wallet>€0.00</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat__label">Items in cart</div>
+                            <div class="stat__value" data-acc-cart-items>0</div>
+                        </div>
+                    </div>
+
+                    <div class="acc-actions">
+                        <a class="btn primary" href="../ShopPage/shopPage.html">Go to shop</a>
+                        <a class="btn" href="../CartPage/cartPage.html">Open cart</a>
+                    </div>
+                </article>
+
+                <article class="card vouchers-card">
+                    <div class="card-title">
+                        <h2>Your vouchers</h2>
+                        <div class="mini" data-voucher-status></div>
+                    </div>
+
+                    <div class="voucher-list" data-voucher-list></div>
+
+                    <div class="voucher-hint">
+                        Vouchers are used in <strong>Cart</strong>. You can apply only one at a time.
+                    </div>
+                </article>
+
+                <article class="card applied-card" data-applied-wrap hidden>
+                    <h2>Currently applied</h2>
+                    <p class="mini">This voucher is selected for your next checkout.</p>
+
+                    <div class="applied-row">
+                        <div>
+                            <div class="applied-title" data-applied-title>—</div>
+                            <div class="mini" data-applied-code>—</div>
+                        </div>
+
+                        <span class="badge sale" data-applied-badge>—</span>
+                    </div>
+
+                    <div class="applied-actions">
+                        <a class="btn primary" href="../CartPage/cartPage.html">Go to cart</a>
+                        <button class="btn" type="button" data-clear-applied>Clear applied voucher</button>
+                    </div>
+                </article>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script src="../../assets/js/store.js"></script>
+    <script src="../../assets/js/common.js"></script>
+    <script src="./accountPage.js"></script>
+</body>
+
+</html>
