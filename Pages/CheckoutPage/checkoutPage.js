@@ -1,7 +1,8 @@
-const KEY_LAST_ORDER = "ud_last_order";
-
 (function () {
     "use strict";
+
+    const KEY_LAST_ORDER = "ud_last_order";
+    const KEY_ORDERS = "ud_orders";
 
     function money(v) { return window.Store.money(v); }
     function getCart() { return window.Store.getCart(); }
@@ -129,6 +130,31 @@ const KEY_LAST_ORDER = "ud_last_order";
         return ok;
     }
 
+    function readJson(key, fallback) {
+        try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        } catch {
+            return fallback;
+        }
+    }
+
+    function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function saveOrder(order) {
+        writeJson(KEY_LAST_ORDER, order);
+
+        const orders = readJson(KEY_ORDERS, []);
+        orders.unshift(order);
+        writeJson(KEY_ORDERS, orders);
+
+        if (typeof window.Store.addOrder === "function") {
+            window.Store.addOrder(order);
+        }
+    }
+
     function placeOrder(form) {
         const cart = getCart();
         if (!cart.length) {
@@ -139,19 +165,17 @@ const KEY_LAST_ORDER = "ud_last_order";
         const totals = calcTotals(cart);
         const payment = form.payment.value;
 
+        const userBefore = window.Store.getUser();
+        const walletBefore = Number(userBefore.wallet || 0);
+
         if (payment === "wallet") {
-            const user = window.Store.getUser();
-            if (user.wallet < totals.finalTotal) {
+            if (walletBefore < totals.finalTotal) {
                 setFormMsg("Insufficient wallet balance. Choose cash or add funds.", true);
                 return;
             }
-
-            user.wallet = Math.round((user.wallet - totals.finalTotal) * 100) / 100;
-            window.Store.setUser(user);
-            window.UI?.updateHeader?.();
         }
 
-        const user = window.Store.getUser();
+        const voucherId = getAppliedVoucherId();
 
         const order = {
             id: `ORD-${Date.now()}`,
@@ -164,10 +188,11 @@ const KEY_LAST_ORDER = "ud_last_order";
                 address: form.address.value.trim(),
                 note: (form.note.value || "").trim()
             },
-            payment: form.payment.value,
-            voucherId: window.Store.getAppliedVoucher?.() ?? null,
+            payment,
+            voucherId,
             items: cart.map(row => {
                 const p = findProduct(row.productId);
+                if (!p) return null;
                 const unit = window.Store.discountedPrice(p);
                 return {
                     productId: p.id,
@@ -177,7 +202,7 @@ const KEY_LAST_ORDER = "ud_last_order";
                     unitPrice: unit,
                     lineTotal: Math.round(unit * row.qty * 100) / 100
                 };
-            }),
+            }).filter(Boolean),
             totals: {
                 itemsCount: totals.itemsCount,
                 subtotal: totals.subtotal,
@@ -186,20 +211,26 @@ const KEY_LAST_ORDER = "ud_last_order";
                 totalAfterProductDiscount: totals.total,
                 finalTotal: totals.finalTotal
             },
-            walletBefore: user.wallet,
-            walletAfter: form.payment.value === "wallet"
-                ? Math.round((user.wallet - totals.finalTotal) * 100) / 100
-                : user.wallet
+            walletBefore,
+            walletAfter: payment === "wallet"
+                ? Math.round((walletBefore - totals.finalTotal) * 100) / 100
+                : walletBefore
         };
 
-        localStorage.setItem(KEY_LAST_ORDER, JSON.stringify(order));
+        if (payment === "wallet") {
+            const updated = window.Store.getUser();
+            updated.wallet = order.walletAfter;
+            window.Store.setUser(updated);
+            window.UI?.updateHeader?.();
+        }
 
+        saveOrder(order);
 
         window.Store.setCart([]);
         window.Store.setAppliedVoucher?.(null);
         window.UI?.updateHeader?.();
 
-       location.href = "../SuccessPage/successPage.html";
+        location.href = "../SuccessPage/successPage.html";
     }
 
     function initPaymentSelect() {
