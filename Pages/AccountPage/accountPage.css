@@ -1,8 +1,31 @@
 .account-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 18px;
-    align-items: start;
+    align-items: stretch;
+}
+
+.acc-card {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.orders-card {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.vouchers-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.applied-card {
+    grid-column: 1 / -1;
+    grid-row: 3;
 }
 
 .acc-card {
@@ -50,6 +73,7 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     background: rgba(255, 255, 255, .02);
+    min-width: 0;
 }
 
 .stat__label {
@@ -67,6 +91,11 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.vouchers-card {
+    display: flex;
+    flex-direction: column;
 }
 
 .vouchers-card .card-title {
@@ -98,6 +127,7 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    min-width: 0;
 }
 
 .voucher-title {
@@ -115,6 +145,12 @@
     font-size: 13px;
     padding-top: 12px;
     border-top: 1px solid var(--line);
+}
+
+.orders-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .applied-row {
@@ -141,17 +177,11 @@
     flex-wrap: wrap;
 }
 
-.stat__value--green {
-    color: rgba(46, 204, 113, .95);
-    text-shadow: 0 0 18px rgba(46, 204, 113, .12);
-}
-
 .stat--wallet {
     background: rgba(46, 204, 113, .12);
     border: 1px solid rgba(46, 204, 113, .45);
     border-radius: 18px;
     padding: 16px 18px;
-
     box-shadow:
         inset 0 0 0 1px rgba(46, 204, 113, .08),
         0 6px 18px rgba(0, 0, 0, .25);
@@ -165,6 +195,7 @@
     color: rgba(46, 204, 113, .95);
     font-weight: 800;
     font-size: 1.35rem;
+    text-shadow: 0 0 18px rgba(46, 204, 113, .12);
 }
 
 @media (max-width: 980px) {
@@ -174,5 +205,13 @@
 
     .acc-stats {
         grid-template-columns: 1fr;
+    }
+
+    .acc-card,
+    .vouchers-card,
+    .orders-card,
+    .applied-card {
+        grid-column: 1;
+        grid-row: auto;
     }
 }
