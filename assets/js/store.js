@@ -10,8 +10,8 @@
 
     const seedUser = {
         id: 1,
-        firstName: "John",
-        lastName: "Doe",
+        firstName: "New",
+        lastName: "User",
         wallet: 120.0,
         vouchers: [
             { id: "V10", title: "Voucher 10%", percent: 10 },
