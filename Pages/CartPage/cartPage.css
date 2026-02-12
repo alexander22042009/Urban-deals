@@ -11,6 +11,7 @@
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 12px;
+    padding: 0 6px;
 }
 
 .cart-list {
@@ -23,7 +24,7 @@
     display: grid;
     grid-template-columns: 110px 1fr auto;
     gap: 14px;
-    padding: 12px;
+    padding: 14px 16px;
     border-radius: 16px;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, .02);
@@ -48,6 +49,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 2px 6px;
 }
 
 .cart-item__title {
@@ -66,6 +68,7 @@
 .cart-item__meta {
     color: var(--muted);
     font-size: .95rem;
+    padding-right: 6px;
 }
 
 .cart-item__price {
@@ -113,16 +116,26 @@
     opacity: .9;
 }
 
+.summary-card {
+    padding: 18px 18px;
+}
+
+.summary-list {
+    padding: 6px 6px;
+}
+
 .summary-card .summary-row {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 10px 6px;
     color: var(--text);
 }
 
 .summary-card .summary-row.total {
     font-size: 1.1rem;
     font-weight: 800;
+    padding-top: 14px;
+    padding-bottom: 14px;
 }
 
 .summary-divider {
@@ -136,7 +149,7 @@
 }
 
 .cart-empty {
-    padding: 16px;
+    padding: 18px 18px;
     border-radius: 16px;
     border: 1px dashed var(--line);
     color: var(--muted);
@@ -154,7 +167,7 @@
 
 .voucher-box {
     margin-top: 14px;
-    padding-top: 12px;
+    padding-top: 14px;
     border-top: 1px solid var(--line);
 }
 
@@ -162,12 +175,14 @@
     margin: 0 0 10px;
     font-size: 14px;
     opacity: .9;
+    padding: 0 6px;
 }
 
 .voucher-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 0 6px;
 }
 
 .voucher-item {
@@ -175,7 +190,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 10px 12px;
+    padding: 12px 14px;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: rgba(255, 255, 255, .02);
@@ -196,12 +211,12 @@
     margin-top: 10px;
     font-size: 13px;
     color: rgba(255, 255, 255, .75);
+    padding: 0 6px;
 }
 
 .voucher-msg.error {
     color: rgba(239, 68, 68, .95);
 }
-
 
 @media (max-width: 980px) {
     .cart-layout {
@@ -210,11 +225,17 @@
 
     .cart-item {
         grid-template-columns: 90px 1fr;
+        padding: 14px 14px;
     }
 
     .cart-item__actions {
         grid-column: 1 / -1;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
+    }
+
+    .summary-card {
+        padding: 16px 16px;
     }
 }

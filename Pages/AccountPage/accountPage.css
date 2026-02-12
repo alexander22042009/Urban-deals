@@ -8,11 +8,19 @@
 .acc-card {
     grid-column: 1;
     grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 18px;
 }
 
 .orders-card {
     grid-column: 1;
     grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 18px;
 }
 
 .vouchers-card {
@@ -21,23 +29,20 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 18px 18px;
 }
 
 .applied-card {
     grid-column: 1 / -1;
     grid-row: 3;
-}
-
-.acc-card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    padding: 18px 18px;
 }
 
 .acc-head {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 0 4px;
 }
 
 .acc-avatar {
@@ -69,7 +74,7 @@
 }
 
 .stat {
-    padding: 12px 14px;
+    padding: 14px 16px;
     border: 1px solid var(--line);
     border-radius: 16px;
     background: rgba(255, 255, 255, .02);
@@ -91,11 +96,7 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-}
-
-.vouchers-card {
-    display: flex;
-    flex-direction: column;
+    padding: 0 4px;
 }
 
 .vouchers-card .card-title {
@@ -103,13 +104,15 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 10px;
+    padding: 0 4px;
 }
 
 .voucher-list {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 0 4px;
 }
 
 .voucher-item {
@@ -140,21 +143,15 @@
 }
 
 .voucher-hint {
-    margin-top: 12px;
+    margin-top: 14px;
     opacity: .75;
     font-size: 13px;
-    padding-top: 12px;
+    padding: 14px 4px 0;
     border-top: 1px solid var(--line);
 }
 
-.orders-card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .applied-row {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -175,13 +172,14 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    padding: 0 4px;
 }
 
 .stat--wallet {
     background: rgba(46, 204, 113, .12);
     border: 1px solid rgba(46, 204, 113, .45);
     border-radius: 18px;
-    padding: 16px 18px;
+    padding: 18px 18px;
     box-shadow:
         inset 0 0 0 1px rgba(46, 204, 113, .08),
         0 6px 18px rgba(0, 0, 0, .25);
@@ -213,5 +211,6 @@
     .applied-card {
         grid-column: 1;
         grid-row: auto;
+        padding: 16px 16px;
     }
 }

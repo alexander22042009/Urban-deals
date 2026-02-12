@@ -8,7 +8,7 @@
     function getCart() { return window.Store.getCart(); }
 
     function findProduct(id) {
-        return window.Store.getProducts().find(p => p.id === id);
+        return window.Store.getProducts().find(p => p.id === id) || null;
     }
 
     function getAppliedVoucherId() {
@@ -19,6 +19,10 @@
         return window.Store.getVouchers?.().find(v => v.id === id) || null;
     }
 
+    function round2(n) {
+        return Math.round(Number(n || 0) * 100) / 100;
+    }
+
     function calcTotals(cart) {
         let itemsCount = 0;
         let subtotal = 0;
@@ -27,15 +31,19 @@
         for (const row of cart) {
             const p = findProduct(row.productId);
             if (!p) continue;
-            const qty = row.qty || 0;
 
+            const qty = Number(row.qty || 0);
             const sale = window.Store.discountedPrice(p);
+
             itemsCount += qty;
-            subtotal += p.price * qty;
-            total += sale * qty;
+            subtotal += Number(p.price) * qty;
+            total += Number(sale) * qty;
         }
 
-        const discount = Math.max(0, subtotal - total);
+        subtotal = round2(subtotal);
+        total = round2(total);
+
+        const discount = Math.max(0, round2(subtotal - total));
 
         const appliedId = getAppliedVoucherId();
         const voucher = appliedId ? getVoucherById(appliedId) : null;
@@ -44,8 +52,8 @@
         let finalTotal = total;
 
         if (voucher) {
-            voucherDiscount = Math.round(total * (voucher.percent / 100) * 100) / 100;
-            finalTotal = Math.max(0, Math.round((total - voucherDiscount) * 100) / 100);
+            voucherDiscount = round2(total * (Number(voucher.percent || 0) / 100));
+            finalTotal = Math.max(0, round2(total - voucherDiscount));
         }
 
         return { itemsCount, subtotal, discount, total, voucher, voucherDiscount, finalTotal };
@@ -74,14 +82,15 @@
             const p = findProduct(row.productId);
             if (!p) return "";
             const sale = window.Store.discountedPrice(p);
+            const qty = Number(row.qty || 0);
 
             return `
         <div class="sum-item">
           <div class="sum-left">
             <div class="name">${p.name}</div>
-            <div class="meta">x${row.qty} • ${money(sale)} each</div>
+            <div class="meta">x${qty} • ${money(sale)} each</div>
           </div>
-          <div class="sum-right">${money(sale * row.qty)}</div>
+          <div class="sum-right">${money(round2(Number(sale) * qty))}</div>
         </div>
       `;
         }).join("");
@@ -103,7 +112,7 @@
         const el = document.querySelector("[data-form-msg]");
         if (!el) return;
         el.textContent = text || "";
-        el.classList.toggle("error", isError);
+        el.classList.toggle("error", !!isError);
     }
 
     function validate(form) {
@@ -147,11 +156,15 @@
         writeJson(KEY_LAST_ORDER, order);
 
         const orders = readJson(KEY_ORDERS, []);
-        orders.unshift(order);
-        writeJson(KEY_ORDERS, orders);
+        const next = Array.isArray(orders) ? orders : [];
+        next.unshift(order);
+        writeJson(KEY_ORDERS, next);
 
         if (typeof window.Store.addOrder === "function") {
             window.Store.addOrder(order);
+        }
+        if (typeof window.Store.setLastOrder === "function") {
+            window.Store.setLastOrder(order);
         }
     }
 
@@ -166,16 +179,39 @@
         const payment = form.payment.value;
 
         const userBefore = window.Store.getUser();
-        const walletBefore = Number(userBefore.wallet || 0);
+        const walletBefore = round2(userBefore.wallet);
 
         if (payment === "wallet") {
             if (walletBefore < totals.finalTotal) {
-                setFormMsg("Insufficient wallet balance. Choose cash or add funds.", true);
+                setFormMsg(
+                    `Insufficient wallet balance. You need ${money(totals.finalTotal)}, but you have ${money(walletBefore)}.`,
+                    true
+                );
                 return;
             }
         }
 
         const voucherId = getAppliedVoucherId();
+
+        const items = cart.map(row => {
+            const p = findProduct(row.productId);
+            if (!p) return null;
+            const unit = window.Store.discountedPrice(p);
+            const qty = Number(row.qty || 0);
+            return {
+                productId: p.id,
+                name: p.name,
+                image: p.image,
+                qty,
+                unitPrice: round2(unit),
+                lineTotal: round2(Number(unit) * qty)
+            };
+        }).filter(Boolean);
+
+        if (!items.length) {
+            setFormMsg("Cannot place order: products not found.", true);
+            return;
+        }
 
         const order = {
             id: `ORD-${Date.now()}`,
@@ -190,19 +226,7 @@
             },
             payment,
             voucherId,
-            items: cart.map(row => {
-                const p = findProduct(row.productId);
-                if (!p) return null;
-                const unit = window.Store.discountedPrice(p);
-                return {
-                    productId: p.id,
-                    name: p.name,
-                    image: p.image,
-                    qty: row.qty,
-                    unitPrice: unit,
-                    lineTotal: Math.round(unit * row.qty * 100) / 100
-                };
-            }).filter(Boolean),
+            items,
             totals: {
                 itemsCount: totals.itemsCount,
                 subtotal: totals.subtotal,
@@ -213,7 +237,7 @@
             },
             walletBefore,
             walletAfter: payment === "wallet"
-                ? Math.round((walletBefore - totals.finalTotal) * 100) / 100
+                ? round2(walletBefore - totals.finalTotal)
                 : walletBefore
         };
 

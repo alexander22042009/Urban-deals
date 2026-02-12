@@ -44,33 +44,6 @@
         localStorage.setItem(key, JSON.stringify(value));
     }
 
-    function ensureSeed() {
-        if (!localStorage.getItem(KEY_USER)) write(KEY_USER, seedUser);
-        if (!localStorage.getItem(KEY_PRODUCTS)) write(KEY_PRODUCTS, seedProducts);
-        if (!localStorage.getItem(KEY_CART)) write(KEY_CART, []);
-        if (!localStorage.getItem(KEY_APPLIED_VOUCHER)) write(KEY_APPLIED_VOUCHER, null);
-        if (!localStorage.getItem(KEY_LAST_ORDER)) write(KEY_LAST_ORDER, null);
-        if (!localStorage.getItem(KEY_ORDERS)) write(KEY_ORDERS, []);
-
-        const u = read(KEY_USER, null);
-        if (!u) {
-            write(KEY_USER, seedUser);
-        } else {
-            if (!Array.isArray(u.vouchers)) u.vouchers = seedUser.vouchers;
-            if (typeof u.wallet !== "number") u.wallet = seedUser.wallet;
-            if (!u.firstName) u.firstName = seedUser.firstName;
-            if (!u.lastName) u.lastName = seedUser.lastName;
-            if (!u.id) u.id = seedUser.id;
-            write(KEY_USER, u);
-        }
-
-        const p = read(KEY_PRODUCTS, null);
-        if (!Array.isArray(p) || !p.length) write(KEY_PRODUCTS, seedProducts);
-
-        const c = read(KEY_CART, null);
-        if (!Array.isArray(c)) write(KEY_CART, []);
-    }
-
     function money(n) {
         return `€${Number(n || 0).toFixed(2)}`;
     }
@@ -81,39 +54,85 @@
         return Math.round(val * 100) / 100;
     }
 
+    function normalizeUser(u) {
+        const user = u && typeof u === "object" ? { ...u } : { ...seedUser };
+        if (!user.id) user.id = seedUser.id;
+        if (!user.firstName) user.firstName = seedUser.firstName;
+        if (!user.lastName) user.lastName = seedUser.lastName;
+        if (typeof user.wallet !== "number") user.wallet = seedUser.wallet;
+        if (!Array.isArray(user.vouchers)) user.vouchers = seedUser.vouchers;
+        user.name = `${user.firstName} ${user.lastName}`.trim();
+        return user;
+    }
+
+    function ensureLocalSeed() {
+        if (!localStorage.getItem(KEY_USER)) write(KEY_USER, normalizeUser(seedUser));
+        if (!localStorage.getItem(KEY_PRODUCTS)) write(KEY_PRODUCTS, seedProducts);
+        if (!localStorage.getItem(KEY_CART)) write(KEY_CART, []);
+        if (!localStorage.getItem(KEY_APPLIED_VOUCHER)) write(KEY_APPLIED_VOUCHER, null);
+        if (!localStorage.getItem(KEY_LAST_ORDER)) write(KEY_LAST_ORDER, null);
+        if (!localStorage.getItem(KEY_ORDERS)) write(KEY_ORDERS, []);
+
+        const u = read(KEY_USER, null);
+        write(KEY_USER, normalizeUser(u));
+
+        const p = read(KEY_PRODUCTS, null);
+        if (!Array.isArray(p) || !p.length) write(KEY_PRODUCTS, seedProducts);
+
+        const c = read(KEY_CART, null);
+        if (!Array.isArray(c)) write(KEY_CART, []);
+
+        const o = read(KEY_ORDERS, null);
+        if (!Array.isArray(o)) write(KEY_ORDERS, []);
+    }
+
+    async function ensureSeed() {
+        ensureLocalSeed();
+
+        if (!window.Api) return;
+
+        try {
+            const [products, user, orders] = await Promise.allSettled([
+                window.Api.getProducts?.(),
+                window.Api.getUser?.(),
+                window.Api.getOrders?.()
+            ]);
+
+            if (products.status === "fulfilled" && Array.isArray(products.value)) {
+                write(KEY_PRODUCTS, products.value);
+            }
+
+            if (user.status === "fulfilled" && user.value) {
+                write(KEY_USER, normalizeUser(user.value));
+            }
+
+            if (orders.status === "fulfilled" && Array.isArray(orders.value)) {
+                write(KEY_ORDERS, orders.value);
+            }
+        } catch {
+        }
+    }
+
     function getUser() {
-        const u = read(KEY_USER, seedUser);
-        if (u && u.name) return u;
-        return { ...u, name: `${u.firstName || "John"} ${u.lastName || "Doe"}`.trim() };
+        return normalizeUser(read(KEY_USER, seedUser));
     }
 
     function setUser(u) {
-        if (!u) return;
-        if (!u.firstName || !u.lastName) {
-            const full = (u.name || "").trim();
-            if (full) {
-                const parts = full.split(/\s+/);
-                u.firstName = u.firstName || parts[0] || seedUser.firstName;
-                u.lastName = u.lastName || parts.slice(1).join(" ") || seedUser.lastName;
-            } else {
-                u.firstName = u.firstName || seedUser.firstName;
-                u.lastName = u.lastName || seedUser.lastName;
-            }
-        }
-        if (!u.name) u.name = `${u.firstName} ${u.lastName}`.trim();
-        write(KEY_USER, u);
+        write(KEY_USER, normalizeUser(u));
     }
 
     function getProducts() {
-        return read(KEY_PRODUCTS, seedProducts);
+        const p = read(KEY_PRODUCTS, seedProducts);
+        return Array.isArray(p) ? p : seedProducts;
     }
 
     function getProductById(id) {
-        return (read(KEY_PRODUCTS, seedProducts) || []).find((p) => p.id === Number(id)) || null;
+        return getProducts().find((p) => p.id === Number(id)) || null;
     }
 
     function getCart() {
-        return read(KEY_CART, []);
+        const c = read(KEY_CART, []);
+        return Array.isArray(c) ? c : [];
     }
 
     function setCart(c) {
@@ -121,11 +140,11 @@
     }
 
     function cartCount() {
-        return (read(KEY_CART, []) || []).reduce((s, i) => s + (i.qty || 0), 0);
+        return getCart().reduce((s, i) => s + (i.qty || 0), 0);
     }
 
     function getVouchers() {
-        return (read(KEY_USER, seedUser)?.vouchers || []);
+        return getUser().vouchers || [];
     }
 
     function getAppliedVoucher() {
@@ -141,10 +160,14 @@
         return Array.isArray(o) ? o : [];
     }
 
+    function setOrders(list) {
+        write(KEY_ORDERS, Array.isArray(list) ? list : []);
+    }
+
     function addOrder(order) {
         const all = getOrders();
         all.unshift(order);
-        write(KEY_ORDERS, all);
+        setOrders(all);
     }
 
     function getLastOrder() {
@@ -159,18 +182,25 @@
         ensureSeed,
         money,
         discountedPrice,
+
         getUser,
         setUser,
+
         getProducts,
         getProductById,
+
         getCart,
         setCart,
         cartCount,
+
         getVouchers,
         getAppliedVoucher,
         setAppliedVoucher,
+
         getOrders,
+        setOrders,
         addOrder,
+
         getLastOrder,
         setLastOrder
     };
